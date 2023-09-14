@@ -17,15 +17,13 @@ const ProductScreen = () => {
         error,
     } = useGetProductDetailsQuery(productId);
 
-    const [qty, setQty] = useState(0);
+    const [qty, setQty] = useState(1);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const addToCartHandler = () => {
-        dispatch(addToCart({
-            ...product, qty
-        }));
+        dispatch(addToCart({...product, qty}));
         navigate('/cart');
     };
 
