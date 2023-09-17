@@ -8,8 +8,7 @@ import generateToken from '../utils/generateTokens.js';
 const authUser = asyncHandler(async (req, res) => {
     // We need to pass in the body of request the email and password
     const { email, password } = req.body;
-    const user = User.findOne({ email });
-
+    const user = await User.findOne({ email });
     if(user && (await user.matchPassword(password))) {
         // JWT Code
         generateToken(res, user._id);     
@@ -20,7 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
             isAdmin: user.isAdmin
         });
     } else {
-        req.status(401); // UnAuthorized user
+        res.status(401); // UnAuthorized user
         throw new Error('Invalid Email or Password');
     }
 
