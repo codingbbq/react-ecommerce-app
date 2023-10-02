@@ -10,16 +10,32 @@ import {
 } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { useGetOrderDetailsQuery } from '../slices/orderApiSlice';
+import { toast } from 'react-toastify';
+import {
+    useDeliverOrderMutation,
+    useGetOrderDetailsQuery,
+    usePayOrderMutation,
+  } from '../slices/orderApiSlice';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
+    
     const {
         data: order,
-        refatch,
+        refetch,
         isLoading,
         error,
     } = useGetOrderDetailsQuery(orderId);
+
+    const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+
+
+    async function onApproveTest() {
+      await payOrder({ orderId, details: { payer: {} } });
+      refetch();
+
+      toast.success('Order is paid');
+    }
 
     return isLoading ? (
         <Loader />
@@ -63,7 +79,7 @@ const OrderScreen = () => {
                             </p>
                             {order.isPaid ? (
                                 <Message variant='success'>
-                                    Paid on {order.paiddAt}
+                                    Paid on {order.paidAt}
                                 </Message>
                             ) : (
                                 <Message variant='danger'>Not paid</Message>
@@ -115,8 +131,16 @@ const OrderScreen = () => {
                                     <Col>{order.totalPrice}</Col>
                                 </Row>
                             </ListGroup.Item>
-                            { /* PAY ORDER PLACEHOLDER  */}
-                            { /* MARK AS DELIVERED PLACEHOLDER  */}
+                            {
+                                !order.isPaid && (
+                                    <ListGroup.Item>
+                                        {loadingPay && <Loader />}
+                                        <div>
+                                                <Button onClick={ onApproveTest }>Test pay order</Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )
+                            }
                         </ListGroup>
                     </Card>
                 </Col>
