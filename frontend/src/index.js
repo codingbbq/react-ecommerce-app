@@ -12,6 +12,8 @@ import {
   RouterProvider
 } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
+
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
@@ -22,6 +24,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import OrderListScreen from './screens/admin/OrderListScreen';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +34,7 @@ const router = createBrowserRouter(
       <Route path='/cart' element={<CartScreen />}></Route>
       <Route path='/login' element={<LoginScreen />}></Route>
       <Route path='/register' element={<RegisterScreen />}></Route>
+      
       <Route path='' element={<PrivateRoute />}>
         <Route path='/shipping' element={<ShippingScreen />}></Route>
         <Route path='/payment' element={<PaymentScreen />}></Route>
@@ -38,6 +42,11 @@ const router = createBrowserRouter(
         <Route path='/order/:id' element={<OrderScreen />}></Route>
         <Route path='/profile' element={<ProfileScreen />}></Route>
       </Route>
+
+      <Route path='' element={<AdminRoute />}>
+        <Route path='/admin/orderlist' element={ <OrderListScreen /> }></Route>
+      </Route>
+
     </Route>
   )
 );
