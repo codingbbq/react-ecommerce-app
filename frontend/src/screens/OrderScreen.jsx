@@ -1,13 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
-import {
-    Row,
-    Col,
-    Button,
-    ListGroup,
-    Image,
-    Form,
-    Card,
-} from 'react-bootstrap';
+import { Row, Col, Button, ListGroup, Image, Card } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { toast } from 'react-toastify';
@@ -29,12 +22,25 @@ const OrderScreen = () => {
 
     const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
 
+    const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
+
+    const { userInfo } = useSelector((state) => state.auth);
 
     async function onApproveTest() {
       await payOrder({ orderId, details: { payer: {} } });
       refetch();
 
       toast.success('Order is paid');
+    }
+
+    const deliverOrderHandler = async () => {
+        try {
+            await deliverOrder(orderId);
+            refetch();
+            toast.success('Order Delivered');
+        } catch(error) {
+            toast.error(error?.data?.message || error.error)
+        }
     }
 
     return isLoading ? (
@@ -141,6 +147,16 @@ const OrderScreen = () => {
                                     </ListGroup.Item>
                                 )
                             }
+
+                            { loadingDeliver && <Loader /> }
+
+                            { userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                <ListGroup.Item>
+                                    <Button type='button' className='btn btn-block' onClick={deliverOrderHandler}>
+                                        Mark as Delivered
+                                    </Button>
+                                </ListGroup.Item>
+                            )}
                         </ListGroup>
                     </Card>
                 </Col>
