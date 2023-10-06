@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Form, Button, FormGroup } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { toast } from 'react-toastify';
@@ -25,14 +25,13 @@ const ProductEditScreen = () => {
     const {
         data: product,
         isLoading,
-        refetch,
         error,
     } = useGetProductDetailsQuery(productId);
 
     const [updateProduct, { isLoading: loadingUpdate }] =
         useUpdateProductMutation();
 
-    const [uploadProductImage, { isLoading:loadingUpload }] = useUploadProductImageMutation();
+    const [ uploadProductImage ] = useUploadProductImageMutation();
 
     const navigate = useNavigate();
 
