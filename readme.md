@@ -1,7 +1,9 @@
-# React Ecommerce Web application
+## React Ecommerce Web application
 
 This is a full featured eCommerce web application using the MERN stack. You can [check out the demo](https://react-ecommerce-app-cmix.onrender.com/) which is hosted on render website. 
-P.S: Since it is hosted on a free tier, the web app may take some time to load (server instance may go down due to inactivity)
+
+*P.S: Since it is hosted on a free tier, the server instance may shut down due to inactivity and will take some time to load since it will try to bring the server up again*
+
 ---
 ### Sample User Logins
 ```
@@ -71,6 +73,4 @@ npm run data:import
 
 # Destroy data
 npm run data:destroy
-```
-
 ```
